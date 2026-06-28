@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-import {Test} from "forge-std/Test.sol";
-import {SimpleAMM} from "../src/SimpleAMM.sol";
-import {MockERC20} from "../src/MockERC20.sol";
+import { Test } from "forge-std/Test.sol";
+import { SimpleAMM } from "../src/SimpleAMM.sol";
+import { MockERC20 } from "../src/MockERC20.sol";
 
 contract SimpleAMMTest is Test {
     SimpleAMM internal amm;

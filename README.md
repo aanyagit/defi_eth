@@ -8,8 +8,12 @@ built as a **Foundry + Hardhat hybrid** so you get fast Solidity-native testing
 
 | Contract | Description |
 | --- | --- |
-| [`src/SimpleAMM.sol`](src/SimpleAMM.sol) | Single-pair constant-product AMM. Is itself the LP (ERC20) token. 0.3% swap fee accrues to LPs. Reentrancy-guarded, `SafeERC20` transfers, sorted token0/token1, locked `MINIMUM_LIQUIDITY`. |
+| [`src/SimpleAMM.sol`](src/SimpleAMM.sol) | Single-pair constant-product pool. Is itself the LP (ERC20) token. 0.3% swap fee accrues to LPs. Reentrancy-guarded, `SafeERC20` transfers, sorted token0/token1, locked `MINIMUM_LIQUIDITY`. |
+| [`src/AMMFactory.sol`](src/AMMFactory.sol) | Deploys and registers one `SimpleAMM` pool per token pair, keyed by sorted addresses (`getPair`). |
+| [`src/AMMRouter.sol`](src/AMMRouter.sol) | User-facing entry point: ratio-balanced `addLiquidity`/`removeLiquidity` with per-token slippage floors and deadlines, plus multi-hop `swapExactTokensForTokens` across a `path`. Holds no funds between calls. |
 | [`src/MockERC20.sol`](src/MockERC20.sol) | Freely-mintable ERC20 with a faucet, for local/testnet seeding. **Not for mainnet.** |
+
+Typical flow: users interact with the **Router**, which looks up pools via the **Factory** and routes through the underlying **SimpleAMM** pools.
 
 > ⚠️ Hackathon-grade primitive. Reserves are synced from balances, so
 > fee-on-transfer / rebasing tokens are **not** supported. Not audited.
@@ -64,11 +68,12 @@ npm run deploy:local          # Foundry script
 npm run hh:deploy:local       # Hardhat/ethers script
 ```
 
-Both deploy two demo tokens (`dUSD`/`dETH`), a `SimpleAMM` pool, and seed
-100k/100k initial liquidity so the pool is immediately tradeable.
+Both deploy the factory, router, three demo tokens (`dUSD`/`dETH`/`dDAI`), and
+seed two pools (A/B and B/C) so a multi-hop **dUSD → dETH → dDAI** swap works
+out of the box via `router.swapExactTokensForTokens`.
 
 ## Next steps
 
-- Add a `Router` contract for multi-hop swaps and balanced `addLiquidity` (with min-amount slippage guards).
 - Wire up Sepolia / Base Sepolia in `foundry.toml` and `hardhat.config.ts` (placeholders included) when ready to demo on a public testnet.
+- Add `swapTokensForExactTokens` (exact-output) and native-ETH wrapping (WETH) router helpers.
 - Build the frontend against the generated `typechain-types/`.

@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
+import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import { Math } from "@openzeppelin/contracts/utils/math/Math.sol";
 
 /// @title SimpleAMM
 /// @notice A constant-product (x*y=k) automated market maker for a single token pair,
@@ -141,9 +141,8 @@ contract SimpleAMM is ERC20, ReentrancyGuard {
         bool zeroForOne = tokenIn == address(token0);
         if (!zeroForOne && tokenIn != address(token1)) revert InvalidToken();
 
-        (IERC20 input, IERC20 output, uint256 reserveIn, uint256 reserveOut) = zeroForOne
-            ? (token0, token1, reserve0, reserve1)
-            : (token1, token0, reserve1, reserve0);
+        (IERC20 input, IERC20 output, uint256 reserveIn, uint256 reserveOut) =
+            zeroForOne ? (token0, token1, reserve0, reserve1) : (token1, token0, reserve1, reserve0);
 
         if (reserveIn == 0 || reserveOut == 0) revert InsufficientLiquidity();
 
