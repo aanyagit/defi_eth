@@ -1,0 +1,24 @@
+{
+  "name": "defi-eth",
+  "version": "0.1.0",
+  "description": "DEX/AMM smart contracts for an ETHGlobal hackathon — Foundry + Hardhat hybrid",
+  "license": "MIT",
+  "scripts": {
+    "build": "forge build",
+    "test": "forge test",
+    "test:gas": "forge test --gas-report",
+    "fmt": "forge fmt",
+    "node": "anvil",
+    "deploy:local": "forge script script/Deploy.s.sol --rpc-url local --broadcast",
+    "hh:compile": "hardhat compile",
+    "hh:deploy:local": "hardhat run scripts/deploy.ts --network localhost",
+    "hh:console": "hardhat console --network localhost"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-foundry": "^1.1.2",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.0",
+    "typescript": "^5.4.0",
+    "ts-node": "^10.9.2"
+  }
+}

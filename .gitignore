@@ -1,0 +1,24 @@
+# Foundry
+out/
+cache/
+broadcast/
+!broadcast/**/run-latest.json
+
+# Node / Hardhat
+node_modules/
+artifacts/
+cache_hardhat/
+typechain-types/
+coverage/
+coverage.json
+
+# Env & secrets
+.env
+.env.local
+*.key
+
+# Editor / OS
+.DS_Store
+.vscode/
+.idea/
+*.log
