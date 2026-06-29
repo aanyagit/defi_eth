@@ -1,8 +1,12 @@
+import "dotenv/config";
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 // hardhat-foundry makes Hardhat read foundry.toml + remappings.txt, so contracts
 // in src/ and the lib/ dependencies are shared across both toolchains.
 import "@nomicfoundation/hardhat-foundry";
+
+const PRIVATE_KEY = process.env.PRIVATE_KEY;
+const accounts = PRIVATE_KEY ? [PRIVATE_KEY] : [];
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -24,11 +28,32 @@ const config: HardhatUserConfig = {
     localhost: {
       url: process.env.LOCAL_RPC_URL ?? "http://127.0.0.1:8545",
     },
-    // Add testnets here when you deploy beyond local, e.g.:
-    // sepolia: {
-    //   url: process.env.SEPOLIA_RPC_URL ?? "",
-    //   accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
-    // },
+    sepolia: {
+      url: process.env.SEPOLIA_RPC_URL ?? "",
+      chainId: 11155111,
+      accounts,
+    },
+    baseSepolia: {
+      url: process.env.BASE_SEPOLIA_RPC_URL ?? "",
+      chainId: 84532,
+      accounts,
+    },
+  },
+  etherscan: {
+    apiKey: {
+      sepolia: process.env.ETHERSCAN_API_KEY ?? "",
+      baseSepolia: process.env.BASESCAN_API_KEY ?? "",
+    },
+    customChains: [
+      {
+        network: "baseSepolia",
+        chainId: 84532,
+        urls: {
+          apiURL: "https://api-sepolia.basescan.org/api",
+          browserURL: "https://sepolia.basescan.org",
+        },
+      },
+    ],
   },
 };
 

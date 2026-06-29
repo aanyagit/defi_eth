@@ -10,15 +10,20 @@
     "fmt": "forge fmt",
     "node": "anvil",
     "deploy:local": "forge script script/Deploy.s.sol --rpc-url local --broadcast",
+    "deploy:sepolia": "forge script script/Deploy.s.sol --rpc-url sepolia --broadcast --verify",
+    "deploy:base-sepolia": "forge script script/Deploy.s.sol --rpc-url base_sepolia --broadcast --verify",
     "hh:compile": "hardhat compile",
     "hh:deploy:local": "hardhat run scripts/deploy.ts --network localhost",
+    "hh:deploy:sepolia": "hardhat run scripts/deploy.ts --network sepolia",
+    "hh:deploy:base-sepolia": "hardhat run scripts/deploy.ts --network baseSepolia",
     "hh:console": "hardhat console --network localhost"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-foundry": "^1.1.2",
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "dotenv": "^16.6.1",
     "hardhat": "^2.22.0",
-    "typescript": "^5.4.0",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.0"
   }
 }

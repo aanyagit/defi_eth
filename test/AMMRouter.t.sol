@@ -6,6 +6,7 @@ import { AMMFactory } from "../src/AMMFactory.sol";
 import { AMMRouter } from "../src/AMMRouter.sol";
 import { SimpleAMM } from "../src/SimpleAMM.sol";
 import { MockERC20 } from "../src/MockERC20.sol";
+import { WETH9 } from "../src/WETH9.sol";
 
 contract AMMRouterTest is Test {
     AMMFactory internal factory;
@@ -20,7 +21,7 @@ contract AMMRouterTest is Test {
 
     function setUp() public {
         factory = new AMMFactory();
-        router = new AMMRouter(address(factory));
+        router = new AMMRouter(address(factory), address(new WETH9()));
         tokenA = new MockERC20("Token A", "TKA", 18);
         tokenB = new MockERC20("Token B", "TKB", 18);
         tokenC = new MockERC20("Token C", "TKC", 18);

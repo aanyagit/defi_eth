@@ -175,6 +175,23 @@ contract SimpleAMM is ERC20, ReentrancyGuard {
         return numerator / denominator;
     }
 
+    /// @notice Constant-product input required to receive an exact `amountOut`, including
+    ///         the 0.3% fee. Rounds up so the pool is never short-changed.
+    function getAmountIn(uint256 amountOut, uint256 reserveIn, uint256 reserveOut)
+        public
+        pure
+        returns (uint256)
+    {
+        if (amountOut == 0) revert InsufficientOutputAmount();
+        if (reserveIn == 0 || reserveOut == 0) revert InsufficientLiquidity();
+        // Output can never reach the full reserve on the constant-product curve.
+        if (amountOut >= reserveOut) revert InsufficientLiquidity();
+
+        uint256 numerator = reserveIn * amountOut * FEE_DENOMINATOR;
+        uint256 denominator = (reserveOut - amountOut) * FEE_NUMERATOR;
+        return (numerator / denominator) + 1;
+    }
+
     /// @notice Given an amount of one asset, the equal-value amount of the other at
     ///         the current reserve ratio (no fee) — useful for balanced deposits.
     function quote(uint256 amountA, uint256 reserveA, uint256 reserveB)
